@@ -11,7 +11,7 @@ public class MineSweeper {
     int rows;
     int columns;
     int mineCount;
-    int unopenedTiles;
+    int minelessTiles;
     boolean isGameOver = false;
     boolean invalidBoardSize = false;
     String[][] userSideBoard;
@@ -43,7 +43,7 @@ public class MineSweeper {
         this.userSideBoard = new String[rows][columns];
         this.clientSideBoard = new String[rows][columns];
         this.mineCount = (rows * columns) / 4;
-        this.unopenedTiles = rows * columns;
+        this.minelessTiles = (rows * columns) - mineCount;
     }
 
     //This method creates and prints the board that the USER sees
@@ -51,7 +51,7 @@ public class MineSweeper {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 userSideBoard[i][j] = "-";
-                System.out.print(userSideBoard[i][j] + " ");
+                System.out.print(userSideBoard[i][j] + "   ");
             }
             System.out.println("");
         }
@@ -100,14 +100,15 @@ public class MineSweeper {
     //EVALUATION FORM 15
     //This method is responsible for changing the game state (over or not)
     //It also prints the correct message depending on the win or loss
-    void isGameOver(int unopenedTiles) {
-        if (unopenedTiles == mineCount) {
+    void isGameOver() {
+
+        if (minelessTiles == 0) {
             System.out.println("Congratulations! You won.");
-            this.isGameOver = true;
         } else {
-            System.out.println("Bad luck. You lost.");
-            this.isGameOver = true;
+            System.out.println("Bad luck! You lost.");
         }
+        this.isGameOver = true;
+
     }
 
     //This method checks if a location/coordinate exists in the current board
@@ -162,7 +163,7 @@ public class MineSweeper {
 
         for (String[] row : userSideBoard) {
             for (String cell : row) {
-                System.out.print(cell + " ");
+                System.out.print(cell + "   ");
             }
             System.out.println("");
         }
@@ -184,11 +185,13 @@ public class MineSweeper {
                 System.out.println("You have entered an invalid location. Please try again.");
                 continue;
             } else if (hasMine(rowGuess, columnGuess)) {
-                isGameOver(unopenedTiles);
+                isGameOver();
             } else {
                 updateUserBoard(rowGuess, columnGuess);
-                unopenedTiles--;
-                isGameOver(unopenedTiles);
+                minelessTiles--;
+                if(minelessTiles == 0){
+                    isGameOver();
+                }
             }
         }
     }
