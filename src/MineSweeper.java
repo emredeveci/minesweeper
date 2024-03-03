@@ -100,15 +100,16 @@ public class MineSweeper {
     //EVALUATION FORM 15
     //This method is responsible for changing the game state (over or not)
     //It also prints the correct message depending on the win or loss
-    void isGameOver() {
+    void isGameOver(boolean clickedMine, int minelessTiles) {
 
-        if (minelessTiles == 0) {
-            System.out.println("Congratulations! You won.");
-        } else {
-            System.out.println("Bad luck! You lost.");
+        if (clickedMine || minelessTiles == 0) {
+            if (clickedMine) {
+                System.out.println("Bad luck! You lost.");
+            } else if (minelessTiles == 0) {
+                System.out.println("Congratulations! You won.");
+            }
+            isGameOver = true;
         }
-        this.isGameOver = true;
-
     }
 
     //This method checks if a location/coordinate exists in the current board
@@ -185,13 +186,11 @@ public class MineSweeper {
                 System.out.println("You have entered an invalid location. Please try again.");
                 continue;
             } else if (hasMine(rowGuess, columnGuess)) {
-                isGameOver();
+                isGameOver(true, minelessTiles);
             } else {
                 updateUserBoard(rowGuess, columnGuess);
                 minelessTiles--;
-                if(minelessTiles == 0){
-                    isGameOver();
-                }
+                isGameOver(false, minelessTiles);
             }
         }
     }
