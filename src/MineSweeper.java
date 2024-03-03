@@ -7,9 +7,8 @@ public class MineSweeper {
     int rows;
     int columns;
     int mineCount;
-    int remainingTiles;
+    int unopenedTiles;
     boolean isGameOver = false;
-    int lastAdjacentMines = 0;
     boolean invalidBoardSize = false;
     String[][] userSideBoard;
     String[][] clientSideBoard;
@@ -37,7 +36,7 @@ public class MineSweeper {
         userSideBoard = new String[rows][columns];
         clientSideBoard = new String[rows][columns];
         mineCount = (rows * columns) / 4;
-        remainingTiles = rows * columns;
+        unopenedTiles = rows * columns;
     }
 
     void createUserBoard() {
@@ -92,6 +91,10 @@ public class MineSweeper {
         System.out.println("============");
     }
 
+    void gameOver() {
+        System.out.println("You have lost the game");
+    }
+
     //check if a location exists in the current board
     boolean exists(int row, int col) {
         return (row < this.rows && row >= 0 && col < this.columns && col >= 0);
@@ -134,14 +137,11 @@ public class MineSweeper {
             adjacentMines++;
         }
 
-        this.lastAdjacentMines = adjacentMines;
         return Integer.toString(adjacentMines);
     }
 
     void updateUserBoard(int rowGuess, int columnGuess) {
         userSideBoard[rowGuess][columnGuess] = adjacentMines(rowGuess, columnGuess);
-
-//        System.out.println(Arrays.deepToString(userSideBoard));
 
         for (String[] row : userSideBoard) {
             for (String cell : row) {
@@ -168,9 +168,9 @@ public class MineSweeper {
                 isGameOver = true;
             } else {
                 updateUserBoard(rowGuess, columnGuess);
-                remainingTiles--;
+                unopenedTiles--;
 
-                if (remainingTiles == mineCount) {
+                if (unopenedTiles == mineCount) {
                     System.out.println("You won the game!");
                     isGameOver = true;
                 }
