@@ -7,8 +7,10 @@ public class MineSweeper {
     int rows;
     int columns;
     int mineCount;
-    boolean isLost = false;
+    int remainingTiles;
+    boolean isGameOver = false;
     int lastAdjacentMines = 0;
+    boolean invalidBoardSize = false;
     String[][] userSideBoard;
     String[][] clientSideBoard;
 
@@ -17,15 +19,25 @@ public class MineSweeper {
     //ask the user for row and column numbers in the beginning of the game
     void userBoardInputs() {
         System.out.println("\uD83D\uDCA3 CREATE YOUR FIELD \uD83D\uDCA3");
-        System.out.println("Enter the number of rows: ");
-        rows = scanner.nextInt();
-        System.out.println("Enter the number of columns: ");
-        columns = scanner.nextInt();
+
+        do {
+            System.out.println("Enter the number of rows: ");
+            rows = scanner.nextInt();
+            System.out.println("Enter the number of columns: ");
+            columns = scanner.nextInt();
+
+            if (rows < 2 || columns < 2) {
+                System.out.println("The rows and/or columns cannot be lower than 2. Try again: ");
+            } else {
+                invalidBoardSize = true;
+            }
+        } while (!invalidBoardSize);
 
         //assign values to variables that depend on user inputs
         userSideBoard = new String[rows][columns];
         clientSideBoard = new String[rows][columns];
         mineCount = (rows * columns) / 4;
+        remainingTiles = rows * columns;
     }
 
     void createUserBoard() {
@@ -137,27 +149,33 @@ public class MineSweeper {
             }
             System.out.println("");
         }
-
     }
 
     void userGameInputs() {
         int rowGuess, columnGuess;
-        while (!isLost) {
+
+        while (!isGameOver) {
             System.out.println("Enter a row number: ");
             rowGuess = scanner.nextInt();
             System.out.println("Enter a column number: ");
             columnGuess = scanner.nextInt();
 
-            if (Objects.equals(clientSideBoard[rowGuess][columnGuess], "*")) {
+            if (!exists(rowGuess, columnGuess)) {
+                System.out.println("You have entered an invalid location. Please try again.");
+                continue;
+            } else if (hasMine(rowGuess, columnGuess)) {
                 System.out.println("You lost the game.");
-                isLost = true;
+                isGameOver = true;
             } else {
                 updateUserBoard(rowGuess, columnGuess);
-                System.out.println("There are " + this.lastAdjacentMines + " mines around that location.");
+                remainingTiles--;
+
+                if (remainingTiles == mineCount) {
+                    System.out.println("You won the game!");
+                    isGameOver = true;
+                }
             }
-
         }
-
     }
 
     void run() {
