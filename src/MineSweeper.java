@@ -2,8 +2,8 @@ import java.util.Objects;
 import java.util.Scanner;
 import java.util.Random;
 
-    //EVALUATION FORM 5
-    //All the game related code is in MineSweeper class
+//EVALUATION FORM 5
+//All the game related code is in MineSweeper class
 public class MineSweeper {
 
     //EVALUATION FORM 1
@@ -101,7 +101,7 @@ public class MineSweeper {
     //This method is responsible for changing the game state (over or not)
     //It also prints the correct message depending on the win or loss
     void isGameOver(int unopenedTiles) {
-        if(unopenedTiles == mineCount){
+        if (unopenedTiles == mineCount) {
             System.out.println("Congratulations! You won.");
             this.isGameOver = true;
         } else {
