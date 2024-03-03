@@ -8,6 +8,7 @@ public class MineSweeper {
     int columns;
     int mineCount;
     boolean isLost = false;
+    int lastAdjacentMines = 0;
     String[][] userSideBoard;
     String[][] clientSideBoard;
 
@@ -28,10 +29,17 @@ public class MineSweeper {
     }
 
     void createUserBoard() {
-        for (String[] row : userSideBoard) {
-            for (String cell : row) {
-                cell = "-";
-                System.out.print(cell + " ");
+//        for (String[] row : userSideBoard) {
+//            for (String cell : row) {
+//                cell = "-";
+//                System.out.print(cell + " ");
+//            }
+//            System.out.println("");
+//        }
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                userSideBoard[i][j] = "-";
+                System.out.print(userSideBoard[i][j] + " ");
             }
             System.out.println("");
         }
@@ -69,10 +77,59 @@ public class MineSweeper {
             }
             System.out.println("");
         }
+        System.out.println("============");
+    }
+
+    //check if a location exists in the current board
+    boolean exists(int row, int col) {
+        return (row < this.rows && row >= 0 && col < this.columns && col >= 0);
+    }
+
+    //check if an existing location has mines
+    boolean hasMine(int row, int col) {
+        if (exists(row, col)) {
+            return (Objects.equals(clientSideBoard[row][col], "*"));
+        }
+        return false;
+    }
+
+    String adjacentMines(int rowGuess, int columnGuess) {
+        int adjacentMines = 0;
+
+        //checking the boxes above the user's pick
+        if (hasMine(rowGuess - 1, columnGuess - 1) && exists(rowGuess - 1, columnGuess - 1)) {
+            adjacentMines++;
+        }
+        if (hasMine(rowGuess - 1, columnGuess) && exists(rowGuess - 1, columnGuess)) {
+            adjacentMines++;
+        }
+        if (hasMine(rowGuess - 1, columnGuess + 1) && exists(rowGuess - 1, columnGuess + 1)) {
+            adjacentMines++;
+        }
+        if (hasMine(rowGuess, columnGuess - 1) && exists(rowGuess, columnGuess - 1)) {
+            adjacentMines++;
+        }
+        if (hasMine(rowGuess, columnGuess + 1) && exists(rowGuess, columnGuess + 1)) {
+            adjacentMines++;
+        }
+        if (hasMine(rowGuess + 1, columnGuess - 1) && exists(rowGuess + 1, columnGuess - 1)) {
+            adjacentMines++;
+        }
+        if (hasMine(rowGuess + 1, columnGuess) && exists(rowGuess + 1, columnGuess)) {
+            adjacentMines++;
+        }
+        if (hasMine(rowGuess + 1, columnGuess + 1) && exists(rowGuess + 1, columnGuess + 1)) {
+            adjacentMines++;
+        }
+
+        this.lastAdjacentMines = adjacentMines;
+        return Integer.toString(adjacentMines);
     }
 
     void updateUserBoard(int rowGuess, int columnGuess) {
-        userSideBoard[rowGuess][columnGuess] = "0";
+        userSideBoard[rowGuess][columnGuess] = adjacentMines(rowGuess, columnGuess);
+
+//        System.out.println(Arrays.deepToString(userSideBoard));
 
         for (String[] row : userSideBoard) {
             for (String cell : row) {
@@ -91,12 +148,12 @@ public class MineSweeper {
             System.out.println("Enter a column number: ");
             columnGuess = scanner.nextInt();
 
-            if(Objects.equals(clientSideBoard[rowGuess][columnGuess], "*")){
+            if (Objects.equals(clientSideBoard[rowGuess][columnGuess], "*")) {
                 System.out.println("You lost the game.");
                 isLost = true;
             } else {
                 updateUserBoard(rowGuess, columnGuess);
-                System.out.println("wow, damn!");
+                System.out.println("There are " + this.lastAdjacentMines + " mines around that location.");
             }
 
         }
@@ -105,10 +162,10 @@ public class MineSweeper {
 
     void run() {
         userBoardInputs();
-        createUserBoard();
         createClientSideBoard();
         fillWithMines();
-//        printClientSideBoard();
+        printClientSideBoard();
+        createUserBoard();
         userGameInputs();
     }
 }
