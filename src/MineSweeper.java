@@ -125,36 +125,36 @@ public class MineSweeper {
         return false;
     }
 
-    //This method checks if the existing & surrounding tiles has mines
+    //This method checks if the existing & surrounding tiles have mines
     String surroundingMines(int rowGuess, int columnGuess) {
-        int adjacentMines = 0;
+        int surroundingMines = 0;
 
         if (hasMine(rowGuess - 1, columnGuess - 1) && exists(rowGuess - 1, columnGuess - 1)) {
-            adjacentMines++;
+            surroundingMines++;
         }
         if (hasMine(rowGuess - 1, columnGuess) && exists(rowGuess - 1, columnGuess)) {
-            adjacentMines++;
+            surroundingMines++;
         }
         if (hasMine(rowGuess - 1, columnGuess + 1) && exists(rowGuess - 1, columnGuess + 1)) {
-            adjacentMines++;
+            surroundingMines++;
         }
         if (hasMine(rowGuess, columnGuess - 1) && exists(rowGuess, columnGuess - 1)) {
-            adjacentMines++;
+            surroundingMines++;
         }
         if (hasMine(rowGuess, columnGuess + 1) && exists(rowGuess, columnGuess + 1)) {
-            adjacentMines++;
+            surroundingMines++;
         }
         if (hasMine(rowGuess + 1, columnGuess - 1) && exists(rowGuess + 1, columnGuess - 1)) {
-            adjacentMines++;
+            surroundingMines++;
         }
         if (hasMine(rowGuess + 1, columnGuess) && exists(rowGuess + 1, columnGuess)) {
-            adjacentMines++;
+            surroundingMines++;
         }
         if (hasMine(rowGuess + 1, columnGuess + 1) && exists(rowGuess + 1, columnGuess + 1)) {
-            adjacentMines++;
+            surroundingMines++;
         }
 
-        return Integer.toString(adjacentMines);
+        return Integer.toString(surroundingMines);
     }
 
     //EVALUATION FORM 12
