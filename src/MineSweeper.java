@@ -173,7 +173,7 @@ public class MineSweeper {
     //EVALUATION FORM 9, 10, 11, 13, 14
     //This method keeps asking the user for coordinates
     //It loops back when the user enters invalid locations
-    void userGameInputs() {
+    void playGame() {
         int rowGuess, columnGuess;
 
         while (!isGameOver) {
@@ -200,8 +200,8 @@ public class MineSweeper {
         userBoardInputs();
         createClientSideBoard();
         fillWithMines();
-        printClientSideBoard();
+//        printClientSideBoard();
         createUserSideBoard();
-        userGameInputs();
+        playGame();
     }
 }
