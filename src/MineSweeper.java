@@ -14,8 +14,8 @@ public class MineSweeper {
     int minelessTiles;
     boolean isGameOver = false;
     boolean invalidBoardSize = false;
-    String[][] userSideBoard;
-    String[][] clientSideBoard;
+    String[][] userBoard;
+    String[][] serverBoard;
 
     //initialize the scanner
     Scanner scanner = new Scanner(System.in);
@@ -40,35 +40,37 @@ public class MineSweeper {
         } while (!invalidBoardSize);
 
         //assign values to variables that depend on user inputs
-        this.userSideBoard = new String[rows][columns];
-        this.clientSideBoard = new String[rows][columns];
+        this.userBoard = new String[rows][columns];
+        this.serverBoard = new String[rows][columns];
         this.mineCount = (rows * columns) / 4;
         this.minelessTiles = (rows * columns) - mineCount;
     }
 
     //This method creates and prints the board that the USER sees
-    void createUserSideBoard() {
+    void createUserBoard() {
+
+        System.out.println("G A M E   B O A R D");
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                userSideBoard[i][j] = "-";
-                System.out.print(userSideBoard[i][j] + "   ");
+                userBoard[i][j] = "-";
+                System.out.print(userBoard[i][j] + "   ");
             }
             System.out.println("");
         }
     }
 
-    //This method creates the client side board (to be used as a blueprint of the minefield)
+    //This method creates the server side board (to be used as a blueprint of the minefield)
     //This board isn't visible to the player
-    void createClientSideBoard() {
+    void createServerBoard() {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                clientSideBoard[i][j] = "-";
+                serverBoard[i][j] = "-";
             }
         }
     }
 
     //EVALUATION FORM 8
-    //This method randomly place mines on the client side board
+    //This method randomly places mines on the server side board
     void fillWithMines() {
         Random randomizer = new Random();
         int remainingMines = mineCount;
@@ -77,20 +79,22 @@ public class MineSweeper {
             int randomRow = randomizer.nextInt(this.rows);
             int randomColumn = randomizer.nextInt(this.columns);
 
-            if (Objects.equals(clientSideBoard[randomRow][randomColumn], "*")) {
+            if (Objects.equals(serverBoard[randomRow][randomColumn], "*")) {
                 continue;
             } else {
-                clientSideBoard[randomRow][randomColumn] = "*";
+                serverBoard[randomRow][randomColumn] = "*";
                 remainingMines--;
             }
         }
     }
 
-    //This method can print the client side board. By default, it is NOT called when the game runs.
-    void printClientSideBoard() {
-        for (String[] row : clientSideBoard) {
+    //This method prints the server side board. By default, it is NOT called when the game runs.
+    void printServerBoard() {
+
+        System.out.println("M A P");
+        for (String[] row : serverBoard) {
             for (String cell : row) {
-                System.out.print(cell + " ");
+                System.out.print(cell + "   ");
             }
             System.out.println("");
         }
@@ -120,50 +124,50 @@ public class MineSweeper {
     //This method checks if a given location has a mine
     boolean hasMine(int row, int col) {
         if (exists(row, col)) {
-            return (Objects.equals(clientSideBoard[row][col], "*"));
+            return (Objects.equals(serverBoard[row][col], "*"));
         }
         return false;
     }
 
     //This method checks if the existing & surrounding tiles have mines
-    String surroundingMines(int rowGuess, int columnGuess) {
+    String surroundingMines(int row, int col) {
         int surroundingMines = 0;
 
-        if (hasMine(rowGuess - 1, columnGuess - 1) && exists(rowGuess - 1, columnGuess - 1)) {
+        if (hasMine(row - 1, col - 1) && exists(row - 1, col - 1)) {
             surroundingMines++;
         }
-        if (hasMine(rowGuess - 1, columnGuess) && exists(rowGuess - 1, columnGuess)) {
+        if (hasMine(row - 1, col) && exists(row - 1, col)) {
             surroundingMines++;
         }
-        if (hasMine(rowGuess - 1, columnGuess + 1) && exists(rowGuess - 1, columnGuess + 1)) {
+        if (hasMine(row - 1, col + 1) && exists(row - 1, col + 1)) {
             surroundingMines++;
         }
-        if (hasMine(rowGuess, columnGuess - 1) && exists(rowGuess, columnGuess - 1)) {
+        if (hasMine(row, col - 1) && exists(row, col - 1)) {
             surroundingMines++;
         }
-        if (hasMine(rowGuess, columnGuess + 1) && exists(rowGuess, columnGuess + 1)) {
+        if (hasMine(row, col + 1) && exists(row, col + 1)) {
             surroundingMines++;
         }
-        if (hasMine(rowGuess + 1, columnGuess - 1) && exists(rowGuess + 1, columnGuess - 1)) {
+        if (hasMine(row + 1, col - 1) && exists(row + 1, col - 1)) {
             surroundingMines++;
         }
-        if (hasMine(rowGuess + 1, columnGuess) && exists(rowGuess + 1, columnGuess)) {
+        if (hasMine(row + 1, col) && exists(row + 1, col)) {
             surroundingMines++;
         }
-        if (hasMine(rowGuess + 1, columnGuess + 1) && exists(rowGuess + 1, columnGuess + 1)) {
+        if (hasMine(row + 1, col + 1) && exists(row + 1, col + 1)) {
             surroundingMines++;
         }
 
         return Integer.toString(surroundingMines);
     }
 
-    //EVALUATION FORM 12
+    //EVALUATION FORM 11, 12
     //This method updates the user side board and prints it after each reveal
-    void updateUserBoard(int rowGuess, int columnGuess) {
-        userSideBoard[rowGuess][columnGuess] = surroundingMines(rowGuess, columnGuess);
+    void updateUserBoard(int row, int col) {
+        userBoard[row][col] = surroundingMines(row, col);
 
-        for (String[] row : userSideBoard) {
-            for (String cell : row) {
+        for (String[] rows : userBoard) {
+            for (String cell : rows) {
                 System.out.print(cell + "   ");
             }
             System.out.println("");
@@ -171,26 +175,28 @@ public class MineSweeper {
     }
 
     //EVALUATION FORM 9, 10, 11, 13, 14
-    //This method keeps asking the user for coordinates
-    //It loops back when the user enters invalid locations
+    //This method keeps asking the user for coordinates and loops until the user's entry is valid
     void playGame() {
-        int rowGuess, columnGuess;
+        int row, col;
 
         while (!isGameOver) {
             System.out.println("Enter a row number: ");
-            rowGuess = scanner.nextInt();
+            row = scanner.nextInt();
             System.out.println("Enter a column number: ");
-            columnGuess = scanner.nextInt();
+            col = scanner.nextInt();
 
-            if (!exists(rowGuess, columnGuess)) {
+            if (!exists(row, col)) {//EVALUATION FORM 10
                 System.out.println("You have entered an invalid location. Please try again.");
                 continue;
-            } else if (hasMine(rowGuess, columnGuess)) {
+            } else if (!Objects.equals(userBoard[row][col], "-")){
+                System.out.println("You have already revealed this location. Please enter a different row and column.");
+                continue;
+            } else if (hasMine(row, col)) {//EVALUATION FORM 13
                 isGameOver(true, minelessTiles);
             } else {
-                updateUserBoard(rowGuess, columnGuess);
+                updateUserBoard(row, col);
                 minelessTiles--;
-                isGameOver(false, minelessTiles);
+                isGameOver(false, minelessTiles);//EVALUATION FORM 14
             }
         }
     }
@@ -198,10 +204,10 @@ public class MineSweeper {
     //This method calls the above methods in the correct order for the game to function
     void run() {
         userBoardInputs();
-        createClientSideBoard();
+        createServerBoard();
         fillWithMines();
-//        printClientSideBoard();
-        createUserSideBoard();
+        printServerBoard();
+        createUserBoard();
         playGame();
     }
 }
