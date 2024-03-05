@@ -161,7 +161,7 @@ public class MineSweeper {
             if (!exists(row, col)) {//EVALUATION FORM 10
                 System.out.println("You have entered an invalid location. Please try again.");
                 continue;
-            } else if (!Objects.equals(userBoard[row][col], "-")){
+            } else if (!Objects.equals(userBoard[row][col], "-")) {
                 System.out.println("You have already revealed this location. Please enter a different row and column.");
                 continue;
             } else if (hasMine(row, col)) {//EVALUATION FORM 13
