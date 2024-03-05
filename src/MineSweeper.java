@@ -8,14 +8,9 @@ public class MineSweeper {
 
     //EVALUATION FORM 1
     //variables and methods are named after what they do/are
-    int rows;
-    int columns;
-    int mineCount;
-    int minelessTiles;
-    boolean isGameOver = false;
-    boolean invalidBoardSize = false;
-    String[][] userBoard;
-    String[][] serverBoard;
+    int rows, columns, mineCount, minelessTiles;
+    boolean isGameOver = false, invalidBoardSize = false;
+    String[][] userBoard, serverBoard;
 
     //initialize the scanner
     Scanner scanner = new Scanner(System.in);
@@ -46,27 +41,24 @@ public class MineSweeper {
         this.minelessTiles = (rows * columns) - mineCount;
     }
 
-    //This method creates and prints the board that the USER sees
-    void createUserBoard() {
-
-        System.out.println("G A M E   B O A R D");
+    //This method creates a board
+    void createBoard(String[][] boardType) {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                userBoard[i][j] = "-";
-                System.out.print(userBoard[i][j] + "   ");
+                boardType[i][j] = "-";
             }
-            System.out.println("");
         }
     }
 
-    //This method creates the server side board (to be used as a blueprint of the minefield)
-    //This board isn't visible to the player
-    void createServerBoard() {
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                serverBoard[i][j] = "-";
+    //This method prints a board
+    void printBoard(String[][] boardType) {
+        for (String[] row : boardType) {
+            for (String cell : row) {
+                System.out.print(cell + "   ");
             }
+            System.out.println("");
         }
+        System.out.println("============");
     }
 
     //EVALUATION FORM 8
@@ -86,19 +78,6 @@ public class MineSweeper {
                 remainingMines--;
             }
         }
-    }
-
-    //This method prints the server side board. By default, it is NOT called when the game runs.
-    void printServerBoard() {
-
-        System.out.println("M A P");
-        for (String[] row : serverBoard) {
-            for (String cell : row) {
-                System.out.print(cell + "   ");
-            }
-            System.out.println("");
-        }
-        System.out.println("============");
     }
 
     //EVALUATION FORM 15
@@ -162,16 +141,10 @@ public class MineSweeper {
     }
 
     //EVALUATION FORM 11, 12
-    //This method updates the user side board and prints it after each reveal
+    //This method updates the user side board and prints it after each location reveal
     void updateUserBoard(int row, int col) {
         userBoard[row][col] = surroundingMines(row, col);
-
-        for (String[] rows : userBoard) {
-            for (String cell : rows) {
-                System.out.print(cell + "   ");
-            }
-            System.out.println("");
-        }
+        printBoard(userBoard);
     }
 
     //EVALUATION FORM 9, 10, 11, 13, 14
@@ -204,10 +177,13 @@ public class MineSweeper {
     //This method calls the above methods in the correct order for the game to function
     void run() {
         userBoardInputs();
-        createServerBoard();
+        createBoard(userBoard);
+        createBoard(serverBoard);
         fillWithMines();
-        printServerBoard();
-        createUserBoard();
+        System.out.println("M  A  P");
+        printBoard(serverBoard);
+        System.out.println("G A M E   B O A R D");
+        printBoard(userBoard);
         playGame();
     }
 }
