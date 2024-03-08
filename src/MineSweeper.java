@@ -15,16 +15,16 @@ public class MineSweeper {
     //initialize the scanner
     Scanner scanner = new Scanner(System.in);
 
-    //EVALUATION FORM 7
+    //EVALUATION FORM 6, 7
     //ask the user for row and column numbers in the beginning of the game
     //if the board size is invalid, keep asking the user for new inputs
     void userBoardInputs() {
         System.out.println("\uD83D\uDCA3 CREATE YOUR FIELD \uD83D\uDCA3");
 
         do {
-            System.out.println("Enter the number of rows: ");
+            System.out.print("Enter the number of rows: ");
             rows = scanner.nextInt();
-            System.out.println("Enter the number of columns: ");
+            System.out.print("Enter the number of columns: ");
             columns = scanner.nextInt();
 
             if (rows < 2 || columns < 2) {
@@ -80,7 +80,7 @@ public class MineSweeper {
         }
     }
 
-    //EVALUATION FORM 15
+    //EVALUATION FORM 6, 15
     //This method is responsible for changing the game state (over or not)
     //It also prints the correct message depending on the win or loss
     void isGameOver(boolean clickedMine, int minelessTiles) {
@@ -141,21 +141,21 @@ public class MineSweeper {
     }
 
     //EVALUATION FORM 11, 12
-    //This method updates the user side board and prints it after each location reveal
+    //This method updates the user side board after each guess
     void updateUserBoard(int row, int col) {
         userBoard[row][col] = surroundingMines(row, col);
         printBoard(userBoard);
     }
 
-    //EVALUATION FORM 9, 10, 11, 13, 14
+    //EVALUATION FORM 6, 9, 10, 11, 13, 14
     //This method keeps asking the user for coordinates and loops until the user's entry is valid
     void playGame() {
         int row, col;
 
         while (!isGameOver) {
-            System.out.println("Enter a row number: ");
+            System.out.print("Enter a row number: ");
             row = scanner.nextInt();
-            System.out.println("Enter a column number: ");
+            System.out.print("Enter a column number: ");
             col = scanner.nextInt();
 
             if (!exists(row, col)) {//EVALUATION FORM 10
@@ -167,7 +167,7 @@ public class MineSweeper {
             } else if (hasMine(row, col)) {//EVALUATION FORM 13
                 isGameOver(true, minelessTiles);
             } else {
-                updateUserBoard(row, col);
+                updateUserBoard(row, col);//EVALUATION FORM 11
                 minelessTiles--;
                 isGameOver(false, minelessTiles);//EVALUATION FORM 14
             }
