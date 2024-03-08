@@ -17,7 +17,6 @@ public class MineSweeper {
 
     //EVALUATION FORM 6, 7
     //ask the user for row and column numbers in the beginning of the game
-    //if the board size is invalid, keep asking the user for new inputs
     void userBoardInputs() {
         System.out.println("\uD83D\uDCA3 WELCOME TO MINESWEEPER \uD83D\uDCA3");
 
@@ -81,13 +80,12 @@ public class MineSweeper {
     }
 
     //EVALUATION FORM 6, 15
-    //This method is responsible for changing the game state (over or not)
-    //It also prints the correct message depending on the outcome
+    //This method is responsible for changing the game state (over or not) and printing the outcome
     void isGameOver(boolean clickedMine, int minelessTiles) {
         if (clickedMine || minelessTiles == 0) {
-            if (clickedMine) {
+            if (clickedMine) { //EVALUATION FORM 14
                 System.out.println("Bad luck! You lost.");
-            } else if (minelessTiles == 0) {
+            } else if (minelessTiles == 0) { //EVALUATION FORM 14
                 System.out.println("Congratulations! You won.");
             }
             isGameOver = true;
@@ -171,6 +169,8 @@ public class MineSweeper {
                 isGameOver(false, minelessTiles);//EVALUATION FORM 14
             }
         }
+
+        scanner.close();
     }
 
     //This method calls the above methods in the correct order for the game to function
