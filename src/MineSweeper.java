@@ -79,11 +79,11 @@ public class MineSweeper {
         }
     }
 
-    //EVALUATION FORM 6, 15
+    //EVALUATION FORM 6, 13, 14, 15
     //This method is responsible for changing the game state (over or not) and printing the outcome
     void isGameOver(boolean clickedMine, int minelessTiles) {
         if (clickedMine || minelessTiles == 0) {
-            if (clickedMine) { //EVALUATION FORM 14
+            if (clickedMine) { //EVALUATION FORM 13
                 System.out.println("Bad luck! You lost.");
             } else if (minelessTiles == 0) { //EVALUATION FORM 14
                 System.out.println("Congratulations! You won.");
