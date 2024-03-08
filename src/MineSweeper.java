@@ -19,7 +19,7 @@ public class MineSweeper {
     //ask the user for row and column numbers in the beginning of the game
     //if the board size is invalid, keep asking the user for new inputs
     void userBoardInputs() {
-        System.out.println("\uD83D\uDCA3 CREATE YOUR FIELD \uD83D\uDCA3");
+        System.out.println("\uD83D\uDCA3 WELCOME TO MINESWEEPER \uD83D\uDCA3");
 
         do {
             System.out.print("Enter the number of rows: ");
@@ -41,7 +41,7 @@ public class MineSweeper {
         this.minelessTiles = (rows * columns) - mineCount;
     }
 
-    //This method creates a board
+    //Create a board
     void createBoard(String[][] boardType) {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
@@ -50,7 +50,7 @@ public class MineSweeper {
         }
     }
 
-    //This method prints a board
+    //Print a board
     void printBoard(String[][] boardType) {
         for (String[] row : boardType) {
             for (String cell : row) {
@@ -82,9 +82,8 @@ public class MineSweeper {
 
     //EVALUATION FORM 6, 15
     //This method is responsible for changing the game state (over or not)
-    //It also prints the correct message depending on the win or loss
+    //It also prints the correct message depending on the outcome
     void isGameOver(boolean clickedMine, int minelessTiles) {
-
         if (clickedMine || minelessTiles == 0) {
             if (clickedMine) {
                 System.out.println("Bad luck! You lost.");
@@ -148,7 +147,7 @@ public class MineSweeper {
     }
 
     //EVALUATION FORM 6, 9, 10, 11, 13, 14
-    //This method keeps asking the user for coordinates and loops until the user's entry is valid
+    //This method keeps asking the user for coordinates, and loops until the user's entry is valid
     void playGame() {
         int row, col;
 
@@ -180,8 +179,8 @@ public class MineSweeper {
         createBoard(userBoard);
         createBoard(serverBoard);
         placeMines();
-        System.out.println("M  A  P");
-        printBoard(serverBoard);
+//        System.out.println("M  A  P");
+//        printBoard(serverBoard);
         System.out.println("G A M E   B O A R D");
         printBoard(userBoard);
         playGame();

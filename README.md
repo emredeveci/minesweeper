@@ -35,8 +35,15 @@ The repository contains two code files:
     - For each guess, the code first tests for valid entries with the ```exists``` method. 
     - If the cell has already been entered, the player is notified and asked to enter another location.
     - If the cell has a mine, ```hasMine``` method returns true, and the ```isGameOver``` method ends the game with the relevant message shown to the player.
-    - If the cell does not have a mine, the ```surroundingMines``` method calculates the number of mines around the revealed cell and assigns their total number to it. The ```minelesssTiles``` variable is incremented, and the player is then shown an updated board and asked to enter a new guess. 
+    - If the cell does not have a mine, the ```surroundingMines``` method calculates the number of mines around the revealed cell and assigns their total number to it. The ```minelessTiles``` variable is incremented, and the player is then shown an updated board and asked to enter a new guess. 
     - If the player successfully reveals all the cells without mines (when ```minelessTiles``` variable reaches zero), the game ends with the relevant message shown to the player.
+
+## Win Scenario
+
+![Win Scenario](screenshots/winscenario.png)
+
+## Loss Scenario
+![Loss Scenario](screenshots/lossscenario.png)
 
     
 ## Authors
