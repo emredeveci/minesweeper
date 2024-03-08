@@ -63,7 +63,7 @@ public class MineSweeper {
 
     //EVALUATION FORM 8
     //This method randomly places mines on the server side board
-    void fillWithMines() {
+    void placeMines() {
         Random randomizer = new Random();
         int remainingMines = mineCount;
 
@@ -179,7 +179,7 @@ public class MineSweeper {
         userBoardInputs();
         createBoard(userBoard);
         createBoard(serverBoard);
-        fillWithMines();
+        placeMines();
         System.out.println("M  A  P");
         printBoard(serverBoard);
         System.out.println("G A M E   B O A R D");
